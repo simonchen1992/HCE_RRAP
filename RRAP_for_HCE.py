@@ -65,7 +65,7 @@ def footer(canvas, doc):
 
 def header(canvas, doc):
     canvas.saveState()
-    p = Paragraph("<font size=10 face='Courier'><b>RRAP VALIDATION REPORT - TOOL VERSION 1.0</b></font>", normalStyle)
+    p = Paragraph("<font size=10 face='Courier'><b>RRAP VALIDATION REPORT - TOOL VERSION 1.1</b></font>", normalStyle)
     w, h = p.wrap(doc.width, doc.bottomMargin)
     p.drawOn(canvas, doc.leftMargin + doc.width - 6.2*inch, doc.topMargin + doc.height + 0.25*inch)
     #canvas.line(doc.leftMargin, doc.bottomMargin + doc.height + 0.3*inch, doc.leftMargin + doc.width, doc.bottomMargin + doc.height + 0.2*inch)

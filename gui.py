@@ -17,7 +17,7 @@ import visa
 class MyFrame1(wx.Frame):
 
 	def __init__(self, parent):
-		wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"RRAP_HCE_181a_R0", pos=wx.DefaultPosition,
+		wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"RRAP_HCE_182a_R0", pos=wx.DefaultPosition,
 						  size=wx.Size(-1, -1), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
 		self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -59,7 +59,7 @@ class MyFrame1(wx.Frame):
 
 		gbSizer1.Add((0, 310), wx.GBPosition(3, 5), wx.GBSpan(1, 1), wx.EXPAND, 5)
 
-		self.inputPath = wx.FilePickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*",
+		self.inputPath = wx.FilePickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select the test report", u"*.*",
 										   wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE)
 		gbSizer1.Add(self.inputPath, wx.GBPosition(2, 2), wx.GBSpan(1, 2), 0, 1)
 
