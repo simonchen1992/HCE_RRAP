@@ -178,7 +178,7 @@ def testCaseFilter(productFeature):
         v = condition.replace(f, '').lower()
         v = re.search(r'true|false', v).group()
         #  if device feature meet exception condition, eliminate all involved test cases
-        if productFeature[f] == v:
+        if productFeature[f].lower() == v:
             for tc in EXCEPTIONLIST[condition]:
                 output[tc] = 'not applicable'
     return output
@@ -200,6 +200,10 @@ def testCaseFilterValidation(productFeature):
                     result.append('true')
             else:
                 result.append(productFeature[feature].lower())
+            #@
+            if tc =='T_128_5_17A_C040_01':
+                print feature, result
+            ##
         verdict = 'pass'
         for i in result:
             if i != 'true':
@@ -221,27 +225,88 @@ def genFakeICS():
         output.append(tempfeature)
     return output
 
+def genAllIcs():
+    output = []
+    features = {}
+    for feature in ICSXML['ics_1.xml'].keys():
+        features[feature] = 'true'
+    for falseNum in xrange(len(features)):
+        keys = features.keys()
+        tempfeature = features.copy()
+        tempfeature[keys[i]] = 'false'
+        output.append(tempfeature)
+    return output
+
+def choose(a, i, seq):
+    for temp in ['1', '2']:
+        key = a.keys()
+        a[key[i]] = temp
+        if i == seq-1:
+            print a
+        if i < seq-1:
+            choose(a, i+1 ,seq)
+        
+
+def temp():
+    # for i in ['1', '2']:
+    #     for j in ['1', '2']:
+    #         for z in ['1', '2']:
+    #             print i,j,z
+    a = {'x': '1', 'y':'1', 'z':'1'}
+    for key in a.keys():
+        a[key] = 'true'
+    print choose(a, 0, 3)
+    
+    
+    #print dict(zip(map((lambda x: x), a.keys()), map((lambda x: i for i in [1,2]), a.values())))
+    
+    
+
 
 def genValidationReport():
     # "w" mode will overwrite previous content, if needs to append new text, use "a" mode
     validationLog = open('validation/validationLog.txt', 'w')
     for productIcs in genFakeICS():
+        rrapTestResult = testCaseFilter(productIcs)
+        validationTestResult = testCaseFilterValidation(productIcs)
         for tc in testCaseFilter(productIcs).keys():
-            if testCaseFilter(productIcs)[tc] == testCaseFilterValidation(productIcs)[tc]:
+            if rrapTestResult[tc] == validationTestResult[tc]:
                 continue
             else:
+                if tc == 'T_400_5_8_C03_01':
+                    continue
+                raw_input(tc)
                 validationLog.write(time.ctime() + '\n')
                 validationLog.write('Test Case:' + tc + '\n')
                 validationLog.write('Product ICS:\n')
                 for i in productIcs.keys():
                     validationLog.write(i + ':' + productIcs[i] + '\n')
-                validationLog.write('RRAP tool result: ' + testCaseFilter(productIcs)[tc] + '\n')
-                validationLog.write('Internal validation tool result: ' + testCaseFilterValidation(productIcs)[tc] + '\n\n\n')
-
+                validationLog.write('RRAP tool result: ' + rrapTestResult[tc] + '\n')
+                validationLog.write('Internal validation tool result: ' + validationTestResult[tc] + '\n\n\n')
+    for key in ICSXML.keys():
+        productIcs = ICSXML[key]
+        rrapTestResult = testCaseFilter(productIcs)
+        validationTestResult = testCaseFilterValidation(productIcs)
+        for tc in testCaseFilter(productIcs).keys():
+            if rrapTestResult[tc] == validationTestResult[tc]:
+                continue
+            else:
+                if tc == 'T_400_5_8_C03_01':
+                    continue
+                raw_input(tc)
+                validationLog.write(time.ctime() + '\n')
+                validationLog.write('Test Case:' + tc + '\n')
+                validationLog.write('Product ICS:\n')
+                for i in productIcs.keys():
+                    validationLog.write(i + ':' + productIcs[i] + '\n')
+                validationLog.write('RRAP tool result: ' + rrapTestResult[tc] + '\n')
+                validationLog.write('Internal validation tool result: ' + validationTestResult[tc] + '\n\n\n')
 
 def main():
     #a.genValidationReport()
-    genValidationReport()
+    temp()
+    #print choose()
+    #genValidationReport()
     # getValidationData()
     # print VALIDATIONDATA
     # print ICSXML
